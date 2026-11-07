@@ -33,8 +33,10 @@ This document provides mandatory guidance for autonomous AI coding agents (Antig
    - Prefer Angular Signals and modern RxJS pipe patterns for state management.
 2. **PCI-DSS Compliance**:
    - Never capture or store credit card numbers in Angular components or local state. Use Stripe Elements for all card payment input.
-3. **Strict Peer Dependency Safeguard**:
-   - Because `@stripe/stripe-js` has strict peer constraints with `ngx-stripe`, always run `npm install --legacy-peer-deps` or use exact versions when installing packages.
+3. **Strict Peer Dependency Safeguard & TypeScript Version Pinning (ADR-0001)**:
+   - Always run `npm install --legacy-peer-deps`.
+   - **TypeScript Pinning**: `@angular/compiler-cli` v22 strictly requires TypeScript `~6.0.2`. Do NOT upgrade `typescript` to `7.x` until Angular officially supports it.
+   - Path aliases in `tsconfig.json` must be relative (`./src/app/*`).
 4. **Environment Configuration**:
    - API endpoints and Stripe publishable keys must come from `src/environments/environment.ts` and `environment.prod.ts`.
 
