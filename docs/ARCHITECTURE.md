@@ -2,6 +2,9 @@
 
 This document outlines the architecture, design patterns, and engineering principles behind the **Shopizy** frontend application.
 
+> [!NOTE]
+> Significant architectural decisions, compiler/framework constraints, and governance standards are recorded in the [Architecture Decision Records (ADRs)](adr/README.md).
+
 ---
 
 ## 🏗️ Architecture Overview

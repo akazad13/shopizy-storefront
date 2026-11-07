@@ -4,8 +4,8 @@
 
 ### Modern, responsive e-commerce Single Page Application (SPA) built with Angular Standalone, Tailwind CSS, Stripe, and SignalR
 
-[![Angular](https://img.shields.io/badge/Angular-19.0-DD0031?style=flat-square&logo=angular&logoColor=white)](https://angular.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Angular](https://img.shields.io/badge/Angular-22.2-DD0031?style=flat-square&logo=angular&logoColor=white)](https://angular.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![Playwright](https://img.shields.io/badge/Testing-Playwright%20E2E-2EAD33?style=flat-square&logo=playwright&logoColor=white)](https://playwright.dev/)
 [![Stripe](https://img.shields.io/badge/Payments-Stripe-008CDD?style=flat-square&logo=stripe&logoColor=white)](https://stripe.com/)
@@ -14,7 +14,7 @@
 
 [Overview](#-overview) •
 [Features](#-key-features) •
-[Architecture](#-architecture) •
+[Architecture & Decision Records](#-architecture--decision-records) •
 [Tech Stack](#-tech-stack) •
 [Repository Layout](#-repository-layout) •
 [Quick Start](#-quick-start) •
@@ -38,7 +38,7 @@
 
 ---
 
-## 🏛 Architecture
+## 🏛 Architecture & Decision Records
 
 ```mermaid
 flowchart LR
@@ -67,6 +67,17 @@ flowchart LR
 > [!NOTE]
 > HTTP interceptors manage silent JWT refresh on 401 responses, ensuring uninterrupted browsing and administrative sessions.
 
+### Architecture Decision Records (ADRs)
+
+Architectural choices, non-obvious engineering trade-offs, and critical constraints are formally recorded and tracked as Architecture Decision Records (ADRs) in accordance with the repository's documentation standards.
+
+See the full index and governance guidelines in [**docs/adr/README.md**](docs/adr/README.md).
+
+| ADR | Title | Status | Date | Area |
+| :--- | :--- | :--- | :--- | :--- |
+| [ADR-0000](docs/adr/0000-record-architecture-decisions.md) | Record Architecture Decisions | Accepted | 2026-11-07 | Architecture & Documentation |
+| [ADR-0001](docs/adr/0001-angular-22-and-typescript-pinning.md) | Angular 22 Upgrade and TypeScript 6 Pinning | Accepted | 2026-11-07 | Framework & Tooling |
+
 ---
 
 ## 🛠 Tech Stack
@@ -88,6 +99,10 @@ flowchart LR
 ```text
 ├── e2e/                           # Playwright E2E suites (customer, admin, guest personas)
 ├── docs/                          # In-depth architectural & testing documentation
+│   ├── adr/                       # Architecture Decision Records (ADRs)
+│   │   ├── 0000-record-architecture-decisions.md
+│   │   ├── 0001-angular-22-and-typescript-pinning.md
+│   │   └── README.md              # ADR index and lifecycle documentation
 │   ├── ARCHITECTURE.md            # Technical design, data flows, and interceptors
 │   └── E2E_TESTING_GUIDE.md       # Playwright configuration and multi-persona setup
 ├── public/                        # Static assets and icons.svg sprite sheet
@@ -156,6 +171,7 @@ Navigate to `http://localhost:4200/`.
 | Guide | Focus |
 | :--- | :--- |
 | 🏛️ [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Standalone routing, JWT silent refresh interceptors, and state architecture |
+| 📋 [docs/adr/README.md](docs/adr/README.md) | Architecture Decision Records (ADRs) catalog and governance |
 | 🧪 [docs/E2E_TESTING_GUIDE.md](docs/E2E_TESTING_GUIDE.md) | Multi-persona Playwright test fixtures and auth setup |
 | 🎨 [ICONS_GUIDE.md](ICONS_GUIDE.md) | Built-in SVG sprite catalog and `<app-icon>` usage |
 
