@@ -52,12 +52,29 @@ Autonomous agents modifying this repository must strictly adhere to these invari
    - JWT tokens must be managed through `TokenService` and attached via `AuthTokenInterceptor`.
    - Silent 401 token refresh queue must be maintained without race conditions or infinite loops.
    - Role-based route access must use `AuthGuard` with explicit role validation (`Admin`, `Customer`).
-7. **Multi-Persona Testing Safeguards**:
+7. **Multi-Persona Testing & Testing Invariants ([ADR-0002](docs/adr/0002-testing-paradigm-and-agentic-verification.md))**:
    - Playwright E2E suites test distinct personas (`Customer`, `Admin`, `Guest`). Any route or permission change must verify these test fixtures pass without breaking authentication state caching.
+   - Strict enforcement of the ~75% Unit / ~25% E2E distribution, state-over-interaction testing, and zero cardholder data in test fixtures.
 
 ---
 
-## 3. Commands Cheat Sheet
+## 3. Testing Paradigm & Agentic Verification ([ADR-0002](docs/adr/0002-testing-paradigm-and-agentic-verification.md))
+
+Autonomous agents must adhere to the standardized testing paradigm:
+
+- **Testing Distribution Ratio**:
+  - **~75% Unit & Component Tests (`npm test -- --watch=false`)**: Standalone components, Angular Signals, RxJS pipe transforms, HTTP interceptors (JWT injection, 401 silent token refresh queue), and route guards. Fast, isolated, and deterministic via Karma / Jasmine / Angular `TestBed`.
+  - **~25% End-to-End Tests (`npx playwright test`)**: Critical user journeys across `Customer`, `Admin`, and `Guest` personas using cached authentication storage states (`playwright/.auth/*.json`).
+- **Testing Invariants**:
+  - **State Over Interaction**: Assert observable state changes, Signals, rendered templates, and emitted events rather than internal method spy calls or DOM click ceremony.
+  - **Zero Cardholder Data**: Strictly PCI-DSS compliant. Never introduce raw card data (PAN, CVV, expiry) in fixtures or mocks. Isolate Stripe Elements via `NgxStripeModule.forRoot('pk_test')` and API spies in unit tests; use tokenized intents or alternative methods (e.g. COD) in E2E.
+  - **DAMP Test Naming**: Use Descriptive And Meaningful Phrases (e.g., `it('should queue concurrent requests and retry with new bearer token upon successful 401 silent refresh')`). Test names must make failures immediately diagnosis-ready.
+  - **Chrome DevTools Verification Workflow**: Inspect live DOM, responsive layouts, console telemetry (zero uncaught exceptions), and network requests before completing UI/feature tasks.
+  - **TDD Red-Green-Refactor Loop**: Write a failing test first (Prove-It pattern for bugs) before implementing minimal passing code, followed by clean refactoring.
+
+---
+
+## 4. Commands Cheat Sheet
 
 ```bash
 # Install dependencies
@@ -78,9 +95,10 @@ npx playwright test
 
 ---
 
-## 4. Verification Gates for AI Agents
+## 5. Verification Gates for AI Agents
 
 Before submitting code changes or finishing a turn:
-1. Run `npm run build` — Angular AOT production build must succeed with **0 errors**.
-2. Verify responsive layout for mobile checkout viewports.
-3. Verify all architectural invariants and relevant ADRs in [docs/adr/README.md](docs/adr/README.md) are respected.
+1. Run unit tests when modifying components/services: `npm test -- --watch=false`.
+2. Run `npm run build` — Angular AOT production build must succeed with **0 errors**.
+3. Verify responsive layout for mobile checkout viewports via browser inspection.
+4. Verify all architectural invariants and relevant ADRs in [docs/adr/README.md](docs/adr/README.md) are respected.

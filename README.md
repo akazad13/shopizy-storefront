@@ -77,6 +77,7 @@ See the full index and governance guidelines in [**docs/adr/README.md**](docs/ad
 | :--- | :--- | :--- | :--- | :--- |
 | [ADR-0000](docs/adr/0000-record-architecture-decisions.md) | Record Architecture Decisions | Accepted | 2026-11-07 | Architecture & Documentation |
 | [ADR-0001](docs/adr/0001-angular-22-and-typescript-pinning.md) | Angular 22 Upgrade and TypeScript 6 Pinning | Accepted | 2026-11-07 | Framework & Tooling |
+| [ADR-0002](docs/adr/0002-testing-paradigm-and-agentic-verification.md) | Frontend Testing Paradigm and Agentic Verification | Accepted | 2026-11-07 | Testing & Quality Assurance |
 
 ---
 
@@ -156,13 +157,28 @@ Navigate to `http://localhost:4200/`.
 
 ## 🧪 Testing
 
+Shopizy SPA enforces a comprehensive testing paradigm governed by [**ADR-0002**](docs/adr/0002-testing-paradigm-and-agentic-verification.md) with an intentional distribution ratio:
+- **~75% Unit & Component Tests**: Angular Standalone components, Signals, RxJS pipe transforms, HTTP auth interceptors, and route guards via Karma/Jasmine and Angular `TestBed`.
+- **~25% End-to-End Tests**: Playwright browser automation with multi-persona authentication (`Customer`, `Admin`, `Guest`) validating real critical workflows without repetitive login steps.
+
+### Testing Invariants
+1. **State Over Interaction**: Assert state changes, Signals, and emitted data rather than internal method spies or brittle DOM hierarchies.
+2. **Zero Cardholder Data**: Strictly PCI-DSS compliant. Never use real/synthetic PANs or CVVs in test fixtures. Stripe Elements is mocked and isolated via `NgxStripeModule.forRoot('pk_test')` in unit tests and tokenized flows in E2E.
+3. **DAMP Test Naming**: Descriptive And Meaningful Phrases for clear, diagnosis-ready failure reports.
+4. **Chrome DevTools Verification**: Agentic UI debugging with live DOM inspection, zero console errors, and network telemetry.
+
+### Test Commands
+
 | Test Suite | Scope | Command |
 | :--- | :--- | :--- |
-| **Unit Tests** | Component logic, pipes, and API services (Karma / Jasmine) | `npm test` |
-| **Code Linting** | ESLint static code analysis | `npm run lint` |
+| **Unit Tests (Watch)** | Interactive unit test runner with file watching | `npm test` |
+| **Unit Tests (Single Run)** | Headless, single-run execution for CI & agent validation | `npm test -- --watch=false` |
+| **Code Linting** | ESLint static code analysis across TypeScript & HTML | `npm run lint` |
 | **All E2E Tests** | Headless Playwright tests across all personas | `npm run test:e2e` |
-| **Customer Journey** | Customer browsing and checkout flows | `npx playwright test --project=user-chrome` |
-| **Admin Journey** | Admin dashboard and catalog fulfillment | `npx playwright test --project=admin-chrome` |
+| **Interactive E2E (UI Mode)** | Time-travel debugging, DOM inspection, and trace viewer | `npm run test:e2e:ui` |
+| **Customer Journey** | Authenticated customer browsing, cart, and checkout flows | `npx playwright test --project=user-chrome` |
+| **Admin Journey** | Admin dashboard, product CRUD, and fulfillment flows | `npx playwright test --project=admin-chrome` |
+| **Guest Journey** | Public catalog, search, filtering, and guest cart flows | `npx playwright test --project=guest-chrome` |
 
 ---
 

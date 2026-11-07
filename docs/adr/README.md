@@ -10,6 +10,7 @@ This directory documents the significant architectural and technical decisions m
 | :--- | :--- | :--- | :--- | :--- |
 | [ADR-0000](0000-record-architecture-decisions.md) | Record Architecture Decisions | Accepted | 2026-11-07 | Architecture & Documentation |
 | [ADR-0001](0001-angular-22-and-typescript-pinning.md) | Angular 22 Upgrade and TypeScript 6 Pinning | Accepted | 2026-11-07 | Framework & Tooling |
+| [ADR-0002](0002-testing-paradigm-and-agentic-verification.md) | Frontend Testing Paradigm and Agentic Verification | Accepted | 2026-11-07 | Testing & Quality Assurance |
 
 ---
 
